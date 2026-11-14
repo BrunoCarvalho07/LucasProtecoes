@@ -1,0 +1,20 @@
+/* ==========================================================================
+   fonts.css — FONTES HOSPEDADAS NO PRÓPRIO PROJETO (self-hosted)
+   Vantagens: sem requisição externa (mais rápido), sem rastreamento de terceiros
+   e funciona offline. font-display: swap evita texto invisível durante o carregamento.
+   Licença: SIL Open Font License (Instrument Serif e Inter).
+   ========================================================================== */
+
+/* Títulos */
+@font-face { font-family: "Instrument Serif"; font-style: normal; font-weight: 400; font-display: swap;
+  src: url("../fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap;
+  src: url("../fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); }
+
+/* Texto corrido */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap;
+  src: url("../fonts/inter-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: swap;
+  src: url("../fonts/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: swap;
+  src: url("../fonts/inter-latin-600-normal.woff2") format("woff2"); }

@@ -1,15 +1,13 @@
-# Sistema Operacional / Arquivos Temporários
+# Sistema operacional
 .DS_Store
 Thumbs.db
-desktop.ini
 
-# Editores & IDEs
+# Editores / IDEs
 .vscode/
 .idea/
 *.swp
-*.swo
 
-# Logs & Temporários
+# Dependências e builds (caso venham a ser adicionados)
+node_modules/
+dist/
 *.log
-npm-debug.log*
-yarn-debug.log*

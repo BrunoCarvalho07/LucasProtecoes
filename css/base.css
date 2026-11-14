@@ -1,0 +1,69 @@
+/* ==========================================================================
+   base.css — RESET, TIPOGRAFIA E UTILITÁRIOS GLOBAIS
+   ========================================================================== */
+
+/* ---- Reset moderno ---- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 80px;            /* compensa o header fixo nas âncoras */
+}
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--cream);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;                  /* evita rolagem horizontal no mobile */
+}
+img, svg, video { display: block; max-width: 100%; }
+img { height: auto; }
+ul, ol { list-style: none; padding: 0; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--bronze); outline-offset: 3px; border-radius: 6px; }
+::selection { background: var(--bronze); color: #fff; }
+
+/* Bloqueia a rolagem quando menu/lightbox estão abertos */
+body.is-locked { overflow: hidden; }
+
+/* ---- Títulos: serif elegante, como no Melius ---- */
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; line-height: 1.05; letter-spacing: -.01em; }
+em { font-style: italic; }
+
+/* ---- Utilitários ---- */
+.container { width: min(100% - var(--gutter) * 2, var(--container)); margin-inline: auto; }
+.section { padding-block: var(--section-y); position: relative; }
+
+/* Pequeno rótulo acima dos títulos */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-size: .78rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--bronze-dark); margin-bottom: 1.25rem;
+}
+.eyebrow::before { content: ""; width: 26px; height: 1px; background: currentColor; }
+.eyebrow--light { color: var(--bronze-light); }
+
+/* Cabeçalho padrão das seções */
+.section__head { max-width: 760px; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+.section__title { font-size: clamp(2.3rem, 6vw, 4.3rem); }
+.section__lead { margin-top: 1.4rem; font-size: clamp(1rem, 1.6vw, 1.15rem); color: var(--muted); max-width: 58ch; }
+.section__head--light .section__title { color: #fff; }
+.section__head--light .section__lead { color: rgba(255, 255, 255, .65); }
+
+/* Link de acessibilidade (visível só com foco do teclado) */
+.skip-link {
+  position: fixed; left: 1rem; top: -4rem; z-index: 200;
+  background: var(--ink); color: #fff; padding: .7rem 1rem; border-radius: 10px;
+  transition: top .25s var(--ease-out);
+}
+.skip-link:focus { top: 1rem; }
+
+/* Respeita quem prefere menos movimento (acessibilidade) */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
