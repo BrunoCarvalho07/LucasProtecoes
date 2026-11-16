@@ -14,7 +14,8 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   color: var(--text);
-  background: var(--cream);
+  background: var(--bg);
+  transition: background-color .4s, color .4s;   /* suaviza a troca de tema (fallback sem View Transitions) */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;                  /* evita rolagem horizontal no mobile */
@@ -42,7 +43,7 @@ em { font-style: italic; }
 .eyebrow {
   display: inline-flex; align-items: center; gap: .6rem;
   font-size: .78rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--bronze-dark); margin-bottom: 1.25rem;
+  color: var(--accent); margin-bottom: 1.25rem;
 }
 .eyebrow::before { content: ""; width: 26px; height: 1px; background: currentColor; }
 .eyebrow--light { color: var(--bronze-light); }

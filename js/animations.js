@@ -143,7 +143,7 @@
     function measure() {
       var w = tunnel.clientWidth, h = tunnel.clientHeight;
       geo.vis = w < 700 ? 5 : (w < 1100 ? 7 : 9);                       // quantos cartões cabem de cada lado
-      geo.ch = Math.min(h * (w < 700 ? 0.5 : 0.38), w * (w < 700 ? 0.3 : 0.11));   // altura do cartão central (maior no celular)
+      geo.ch = Math.min(h * (w < 700 ? 0.56 : 0.46), w * (w < 700 ? 0.38 : 0.135));   // altura do cartão central
       geo.cw = geo.ch * 0.7;
       geo.gap = geo.cw * 0.52;
       geo.zMax = TUNNEL.PERSPECTIVE * 0.92;

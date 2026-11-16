@@ -61,10 +61,10 @@
 
 .btn--dark { --btn-bg: var(--ink); --btn-fill: var(--bronze); }
 .btn--ghost {
-  --btn-bg: transparent; --btn-fill: var(--ink); --btn-color: var(--ink);
-  border-color: rgba(13, 14, 17, .28);
+  --btn-bg: transparent; --btn-fill: var(--hover-fill); --btn-color: var(--text);
+  border-color: var(--line-strong);
 }
-.btn--ghost:hover { color: #fff; border-color: var(--ink); }
+.btn--ghost:hover { color: var(--on-hover); border-color: var(--hover-fill); }
 .btn--outline-light {
   --btn-bg: transparent; --btn-fill: #fff; --btn-color: #fff;
   border-color: rgba(255, 255, 255, .3);
@@ -100,8 +100,27 @@
 .brand__name { font-family: var(--font-display); font-size: 1.3rem; line-height: 1; white-space: nowrap; }
 .brand__name em { color: var(--bronze-light); }
 
-/* CTA do header */
-.header__cta { margin-left: auto; box-shadow: 0 8px 26px -10px rgba(185, 131, 85, .8); }
+/* Grupo da direita: botão de tema + CTA (no mobile fica colado à direita, antes do hambúrguer) */
+.header__actions { margin-left: auto; display: flex; align-items: center; gap: .5rem; }
+.header__cta { box-shadow: 0 8px 26px -10px rgba(185, 131, 85, .8); }
+
+/* Botão de alternar tema (claro/escuro) — ícones de sol e lua trocam com rotação */
+.theme-toggle {
+  position: relative; width: 46px; height: 46px; flex: none; border-radius: 50%;
+  background: var(--ink); color: var(--bronze-light);
+  box-shadow: 0 8px 30px -10px rgba(0, 0, 0, .5);
+  transition: transform .5s var(--ease-out), background-color .3s;
+}
+.theme-toggle:hover { transform: rotate(18deg) scale(1.08); }
+.theme-toggle:active { transform: scale(.92); }
+.theme-toggle__icon {
+  position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px;
+  transition: transform .8s var(--ease-out), opacity .5s var(--ease-out);
+}
+/* Tema claro: mostra o SOL; a lua fica "escondida" girada e pequena (e vice-versa no escuro) */
+.theme-toggle__icon--moon { opacity: 0; transform: rotate(-100deg) scale(.3); }
+:root[data-theme="dark"] .theme-toggle__icon--sun { opacity: 0; transform: rotate(100deg) scale(.3); }
+:root[data-theme="dark"] .theme-toggle__icon--moon { opacity: 1; transform: none; }
 
 /* Botão hambúrguer (mobile) — vira "X" quando aberto */
 .burger {
@@ -147,13 +166,13 @@
 @media (min-width: 960px) {
   .burger { display: none; }
   .header__inner { justify-content: space-between; }
-  .header__cta { margin-left: 0; }
+  .header__actions { margin-left: 0; }
   .nav {
     position: static; z-index: auto; inset: auto; clip-path: none; pointer-events: auto;
     flex-direction: row; padding: .35rem; gap: 0;
-    background: rgba(255, 255, 255, .72); color: var(--ink);
+    background: var(--glass); color: var(--text);
     -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4);
-    border: 1px solid rgba(13, 14, 17, .08); border-radius: 999px;
+    border: 1px solid var(--glass-line); border-radius: 999px;
     box-shadow: 0 8px 30px -12px rgba(0, 0, 0, .25);
   }
   .nav__list { display: flex; gap: 0; }
@@ -161,8 +180,8 @@
     font-family: var(--font-body); font-size: .92rem; font-weight: 500; opacity: 1; transform: none;
     padding: .6rem 1.15rem; border-radius: 999px; transition: background .35s var(--ease-out), color .35s;
   }
-  .nav__link:hover { background: var(--ink); color: #fff; }
-  .nav__link.is-current { background: rgba(13, 14, 17, .08); }
+  .nav__link:hover { background: var(--hover-fill); color: var(--on-hover); }
+  .nav__link.is-current { background: var(--current-bg); }
   .nav__mobile-cta { display: none; }
 }
 @media (max-width: 420px) {
@@ -174,11 +193,11 @@
    HERO + TÚNEL 3D
    ========================================================================== */
 .hero {
-  --tunnel-h: clamp(250px, 38vh, 440px);
+  --tunnel-h: clamp(280px, 42vh, 480px);
   position: relative; overflow: hidden; text-align: center;
   background:
-    radial-gradient(circle at 1px 1px, rgba(13, 14, 17, .09) 1px, transparent 0) 0 0 / 22px 22px,   /* textura pontilhada discreta */
-    var(--cream);
+    radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0) 0 0 / 22px 22px,   /* textura pontilhada discreta */
+    var(--bg);
 }
 /* Palco com perspectiva: os cartões são posicionados em 3D por js/animations.js */
 .tunnel {
@@ -212,19 +231,19 @@
 .hero__content::before {
   content: ""; position: absolute; z-index: -1; left: 50%; top: calc(var(--header-h) + var(--tunnel-h) * .74);
   width: min(900px, 130%); height: 420px; transform: translateX(-50%);
-  background: radial-gradient(closest-side, var(--cream) 35%, rgba(244, 239, 231, 0) 100%);
+  background: radial-gradient(closest-side, var(--bg) 35%, var(--bg-fade) 100%);
 }
 .hero .eyebrow { justify-content: center; text-align: center; }
 .hero .eyebrow::before { display: none; }
 /* Celular: palco do túnel um pouco mais alto para comportar cartões maiores */
-@media (max-width: 699px) { .hero { --tunnel-h: clamp(280px, 42vh, 360px); } }
-.hero__title { font-size: clamp(2.7rem, 7.6vw, 5.4rem); max-width: 17ch; line-height: .98; }
+@media (max-width: 699px) { .hero { --tunnel-h: clamp(300px, 46vh, 400px); } }
+.hero__title { font-size: clamp(2.7rem, 7vw, 4.9rem); max-width: 17ch; line-height: .98; }
 .hero__sub { margin-top: 1.6rem; max-width: 56ch; font-size: clamp(1rem, 1.7vw, 1.2rem); color: var(--muted); }
 .hero__actions { margin-top: 2.2rem; display: flex; flex-direction: column; align-items: stretch; gap: .8rem; width: min(100%, 440px); }
 .hero__chips { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem 1.4rem; font-size: .88rem; color: var(--muted); }
 .hero__chips li { display: inline-flex; align-items: center; gap: .4rem; }
 /* Selos de confiança abaixo dos botões */
-.hero__chips svg { width: 1rem; height: 1rem; color: var(--bronze-dark); }
+.hero__chips svg { width: 1rem; height: 1rem; color: var(--accent); }
 
 @media (min-width: 640px) {
   .hero__actions { flex-direction: row; justify-content: center; width: auto; align-items: center; }
@@ -250,7 +269,7 @@
 .card {
   --mx: 50%; --my: 0%;                          /* posição do mouse (definida por JS) */
   position: relative; overflow: hidden; display: flex; flex-direction: column;
-  background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   transition: transform .7s var(--ease-out), box-shadow .7s var(--ease-out), border-color .5s;
 }
@@ -265,12 +284,12 @@
 .card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--ease-out); }
 .card:hover .card__media img { transform: scale(1.08); }   /* zoom sutil na foto */
 .card__body { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: .9rem; padding: 1.6rem 1.5rem 1.8rem; flex: 1; }
-.card__icon { width: 44px; height: 44px; color: var(--bronze-dark); transition: transform .7s var(--ease-out); }
+.card__icon { width: 44px; height: 44px; color: var(--accent); transition: transform .7s var(--ease-out); }
 .card:hover .card__icon { transform: rotate(-8deg) scale(1.1); }
 .card__title { font-size: 1.9rem; }
 .card__text { color: var(--muted); font-size: .97rem; }
 .tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .6rem; }
-.tags li { font-size: .74rem; font-weight: 500; padding: .3rem .7rem; border-radius: 999px; background: rgba(185, 131, 85, .12); color: var(--bronze-dark); }
+.tags li { font-size: .74rem; font-weight: 500; padding: .3rem .7rem; border-radius: 999px; background: rgba(185, 131, 85, .12); color: var(--accent); }
 .card .btn { margin-top: auto; }
 
 @media (min-width: 900px) {
@@ -383,7 +402,7 @@
 /* ==========================================================================
    SOBRE
    ========================================================================== */
-.about { background: var(--cream); }
+.about { background: var(--bg); }
 .about__grid { display: grid; gap: 3rem; align-items: center; }
 .about__media { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4 / 5; box-shadow: var(--shadow-md); }
 /* Foto com 118% da altura: sobra espaço para o parallax (--py definido em js/animations.js) */
@@ -397,7 +416,7 @@
 .features { margin-top: 2.4rem; display: grid; gap: 0; }
 .feature { display: flex; gap: 1.1rem; padding: 1.3rem 0; border-top: 1px solid var(--line); }
 .feature:last-child { border-bottom: 1px solid var(--line); }
-.feature__icon { width: 40px; height: 40px; flex: none; color: var(--bronze-dark); }
+.feature__icon { width: 40px; height: 40px; flex: none; color: var(--accent); }
 .feature h3 { font-size: 1.5rem; margin-bottom: .2rem; }
 .feature p { color: var(--muted); font-size: .95rem; }
 
@@ -419,10 +438,10 @@
 /* ==========================================================================
    DEPOIMENTOS
    ========================================================================== */
-.testimonials { background: var(--paper); }
+.testimonials { background: var(--surface); }
 .quotes { display: grid; gap: 1.25rem; }
 .quote {
-  display: flex; flex-direction: column; gap: 1.2rem; padding: 1.8rem; background: var(--cream);
+  display: flex; flex-direction: column; gap: 1.2rem; padding: 1.8rem; background: var(--bg);
   border: 1px solid var(--line); border-radius: var(--radius); transition: transform .7s var(--ease-out), box-shadow .7s var(--ease-out);
 }
 .quote:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
@@ -436,7 +455,7 @@
 /* ==========================================================================
    FAQ — acordeão
    ========================================================================== */
-.faq { background: var(--cream); }
+.faq { background: var(--bg); }
 .faq__grid { display: grid; gap: 2.5rem; }
 .faq__item { border-top: 1px solid var(--line); }
 .faq__item:last-child { border-bottom: 1px solid var(--line); }
@@ -446,11 +465,11 @@
   transition: color .3s;
 }
 .faq__item summary::-webkit-details-marker { display: none; }
-.faq__item summary:hover { color: var(--bronze-dark); }
+.faq__item summary:hover { color: var(--accent); }
 .faq__plus { position: relative; width: 38px; height: 38px; flex: none; border-radius: 50%; border: 1px solid var(--line); transition: background .4s, border-color .4s, transform .6s var(--ease-out); }
 .faq__plus::before, .faq__plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 1.5px; background: currentColor; transform: translate(-50%, -50%); transition: transform .6s var(--ease-out); }
 .faq__plus::after { transform: translate(-50%, -50%) rotate(90deg); }
-.faq__item[open] .faq__plus { background: var(--ink); color: #fff; border-color: var(--ink); transform: rotate(180deg); }
+.faq__item[open] .faq__plus { background: var(--hover-fill); color: var(--on-hover); border-color: var(--hover-fill); transform: rotate(180deg); }
 .faq__item[open] .faq__plus::after { transform: translate(-50%, -50%) rotate(0deg); }   /* "+" vira "−" */
 .faq__answer { padding: 0 3rem 1.5rem 0; color: var(--muted); max-width: 62ch; }
 .faq__item[open] .faq__answer { animation: faq-open .6s var(--ease-out); }
@@ -485,10 +504,16 @@
 .footer__social a { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--ink-3); transition: background .35s, transform .5s var(--ease-out), border-color .35s; }
 .footer__social a:hover { background: var(--bronze); border-color: var(--bronze); transform: translateY(-4px); }
 .footer__social svg { width: 20px; height: 20px; fill: #fff; }
-.footer__bottom { border-top: 1px solid var(--ink-3); padding-block: 1.4rem calc(1.4rem + 5rem); font-size: .85rem; }
+.footer__bottom {
+  display: flex; flex-direction: column; gap: .4rem;
+  border-top: 1px solid var(--ink-3); padding-block: 1.4rem calc(1.4rem + 5rem); font-size: .85rem;
+}
+/* Crédito do desenvolvedor */
+.footer__credit a { color: var(--bronze-light); border-bottom: 1px solid transparent; transition: border-color .3s, color .3s; }
+.footer__credit a:hover { color: #fff; border-color: var(--bronze-light); }
 @media (min-width: 800px) {
   .footer__grid { grid-template-columns: 1.6fr 1fr 1fr; }
-  .footer__bottom { padding-bottom: 1.6rem; }
+  .footer__bottom { flex-direction: row; justify-content: space-between; align-items: center; padding-bottom: 1.6rem; }
 }
 
 /* ==========================================================================
@@ -517,3 +542,19 @@
   .fab { right: 1.75rem; bottom: 1.75rem; }
   .fab__btn { width: 60px; height: 60px; }
 }
+
+/* ==========================================================================
+   AJUSTES DO TEMA ESCURO
+   Só o que não se resolve apenas trocando tokens (ver css/variables.css).
+   ========================================================================== */
+/* Pílulas escuras do header ganham borda sutil para não "sumirem" no fundo escuro */
+:root[data-theme="dark"] .brand,
+:root[data-theme="dark"] .burger,
+:root[data-theme="dark"] .theme-toggle { border: 1px solid rgba(255, 255, 255, .12); }
+
+/* Botões de orçamento: no escuro o preenchimento do hover fica bronze escuro (não preto) */
+:root[data-theme="dark"] .btn--primary { --btn-fill: var(--bronze-dark); }
+:root[data-theme="dark"] .btn--dark { --btn-bg: #2a2d35; --btn-fill: var(--bronze); }
+
+/* Cartões escuros ("Como funciona") ganham contorno para se destacar do fundo */
+:root[data-theme="dark"] .step { border: 1px solid var(--ink-3); }

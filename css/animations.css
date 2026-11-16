@@ -67,3 +67,45 @@
   0%, 100% { transform: translate(-50%, -50%) scale(.9); opacity: .8; }
   50%      { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
 }
+
+/* --------------------------------------------------------------------------
+   4) BRILHO DOURADO nos botões de orçamento (.btn--shine)
+      • faixa diagonal dourada que atravessa o botão a cada ~3,5s
+      • halo dourado que "respira" ao redor
+      • no hover o brilho acelera
+   -------------------------------------------------------------------------- */
+.btn--shine::after {
+  content: ""; position: absolute; z-index: 1; top: -20%; bottom: -20%; left: 0; width: 45%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 0%, rgba(246, 217, 143, 0) 15%, rgba(255, 238, 185, .95) 50%, rgba(246, 217, 143, 0) 85%, transparent 100%);
+  transform: translateX(-160%) skewX(-22deg);
+  animation: gold-shine 3.4s var(--ease-in-out) infinite;
+}
+.btn--shine:hover::after { animation-duration: 1.6s; }
+.btn--shine { animation: gold-glow 3.2s ease-in-out infinite; }
+
+/* A faixa cruza o botão rapidamente e descansa no resto do ciclo */
+@keyframes gold-shine {
+  0%        { transform: translateX(-160%) skewX(-22deg); }
+  55%, 100% { transform: translateX(330%) skewX(-22deg); }
+}
+/* Halo dourado pulsando suavemente */
+@keyframes gold-glow {
+  0%, 100% { box-shadow: 0 10px 30px -10px rgba(185, 131, 85, .7), 0 0 0 0 rgba(246, 217, 143, 0); }
+  50%      { box-shadow: 0 12px 34px -8px rgba(217, 164, 65, .75), 0 0 22px 2px rgba(246, 217, 143, .45); }
+}
+
+/* --------------------------------------------------------------------------
+   5) TROCA DE TEMA — círculo que se expande a partir do botão
+      Usa a View Transitions API; a animação (clip-path) é disparada em js/theme.js.
+      Desativamos a animação padrão (fade) para só aparecer o círculo.
+   -------------------------------------------------------------------------- */
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 9999; }
+
+/* Fallback (navegadores sem View Transitions): suaviza cores por ~0,6s */
+html.theme-fade, html.theme-fade *, html.theme-fade *::before, html.theme-fade *::after {
+  transition: background-color .6s var(--ease-in-out), color .6s var(--ease-in-out), border-color .6s var(--ease-in-out), box-shadow .6s !important;
+}

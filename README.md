@@ -53,6 +53,8 @@ O projeto é feito apenas com **HTML, CSS e JavaScript puros** — sem framework
 | **Hero** | Túnel 3D de fotos reais (abertura animada, deriva contínua, reação à rolagem e ao mouse) e título revelado palavra por palavra |
 | **Animações** | Scroll reveal com curvas `cubic-bezier`, botões com preenchimento no hover, botões magnéticos, brilho que segue o cursor nos cards, parallax, marquee, barra de progresso de leitura |
 | **Header** | Pílula flutuante que esconde ao rolar para baixo e reaparece ao subir; menu mobile em tela cheia |
+| **Tema claro/escuro** | Botão no header com animação de **círculo expansivo** (View Transitions API), escolha salva no navegador e sem "flash" ao carregar |
+| **Botões de orçamento** | Brilho dourado animado (faixa de luz + halo pulsante) para chamar atenção |
 | **Serviços** | 3 cards com botões que abrem o WhatsApp com **mensagem pré-definida por serviço** |
 | **Galeria** | 46 fotos reais, filtro por categoria (abas com indicador deslizante), paginação "Ver mais" e **lightbox** (teclado, swipe e pré-carregamento) |
 | **Conversão** | CTAs em todas as seções + 2 botões flutuantes (WhatsApp com pulsação e Instagram) |
@@ -84,12 +86,13 @@ lucas-protecoes/
 ├── index.html              # Página única com todas as seções
 ├── css/
 │   ├── fonts.css           # @font-face (fontes locais)
-│   ├── variables.css       # Tokens: cores, fontes, espaçamentos, curvas
+│   ├── variables.css       # Tokens: cores, fontes, espaçamentos, curvas e temas claro/escuro
 │   ├── base.css            # Reset, tipografia, utilitários
 │   ├── components.css      # Header, botões, seções e componentes (BEM)
 │   └── animations.css      # Keyframes e estados de animação
 ├── js/
 │   ├── config.js           # ⚙️ Telefone, Instagram e mensagens do WhatsApp
+│   ├── theme.js            # Alternância de tema claro/escuro (com animação)
 │   ├── main.js             # Links dinâmicos, menu, scroll suave, header, scroll spy
 │   ├── animations.js       # Reveal, título por palavras, túnel 3D, microinterações
 │   └── gallery.js          # Filtro, paginação e lightbox
@@ -129,8 +132,8 @@ window.SITE_CONFIG = {
 
 Para um botão usar uma mensagem, adicione `data-wa="chave"` ao link no HTML (ex.: `data-wa="rede"`).
 
-### Cores e fontes
-Todas as cores e curvas de animação estão em `css/variables.css`:
+### Cores, temas e fontes
+Todas as cores e curvas de animação estão em `css/variables.css`. Os **tokens semânticos** (`--bg`, `--surface`, `--text`, `--muted`, `--accent`…) mudam automaticamente no tema escuro (`:root[data-theme="dark"]`); nos componentes use sempre esses tokens, nunca cores fixas. O tema padrão é o claro e a escolha do visitante é salva em `localStorage` (`lp-theme`).
 
 ```css
 :root {
@@ -147,8 +150,11 @@ Todas as cores e curvas de animação estão em `css/variables.css`:
 
 Categorias disponíveis: `redes`, `janelas`, `piscinas`, `escadas`, `varais`, `mosqueteiras`.
 
+### Brilho dourado dos botões
+Adicione a classe `btn--shine` a qualquer botão. Velocidade e cores estão em `css/animations.css` (`@keyframes gold-shine` e `gold-glow`) e nos tokens `--gold` / `--gold-deep`.
+
 ### Intensidade do túnel 3D
-Os parâmetros (velocidade, suavização, duração da abertura) ficam no objeto `TUNNEL` no topo de `setupTunnel()` em `js/animations.js`.
+Velocidade, suavização e duração da abertura ficam no objeto `TUNNEL` no topo de `js/animations.js`. O **tamanho das fotos** é definido na linha `geo.ch` da função `measure()`.
 
 ### Depoimentos
 Os três cartões em `index.html` (seção `#depoimentos`) são **modelos marcados com “[MODELO]”**. Substitua por depoimentos reais e autorizados.
@@ -164,6 +170,7 @@ Os três cartões em `index.html` (seção `#depoimentos`) são **modelos marcad
 
 ## ♿ Acessibilidade e desempenho
 
+- Tema claro/escuro com `color-scheme`, contraste revisado nos dois temas e `aria-pressed` no botão
 - Respeita `prefers-reduced-motion` (animações desligadas para quem prefere)
 - Navegação completa por teclado, foco visível, *skip link*, ARIA nas abas, menu e lightbox
 - Contraste adequado e alvos de toque ≥ 44 px
@@ -211,5 +218,7 @@ Alternativas: Netlify, Vercel, Cloudflare Pages (arraste a pasta ou conecte o re
 ## 📄 Licença e créditos
 
 © Lucas Proteções. Todos os direitos reservados — o conteúdo (textos, logotipo e fotos) pertence à empresa. Defina a licença do **código** conforme sua preferência antes de tornar o repositório público (por exemplo, MIT).
+
+Desenvolvido por [Bruno Carvalho](https://www.linkedin.com/in/bruno-carvalho-silvaa/).
 
 Créditos: fontes Instrument Serif e Inter (SIL OFL); ícones de marca via Simple Icons (CC0); inspiração de animação: Melius.

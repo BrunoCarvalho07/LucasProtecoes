@@ -8,7 +8,18 @@
 <head>
   <meta charset="utf-8">
   <!-- Marca que o JavaScript está ativo: só então os elementos de animação ficam ocultos até aparecerem -->
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+    /* 1) Marca que o JS está ativo (animações só escondem conteúdo se houver JS)
+       2) Aplica o tema salvo ANTES do CSS carregar, evitando "flash" de tema errado.
+          Padrão: claro. A escolha do visitante é guardada em localStorage ("lp-theme"). */
+    (function () {
+      var root = document.documentElement;
+      root.classList.add("js");
+      var theme = "light";
+      try { if (localStorage.getItem("lp-theme") === "dark") theme = "dark"; } catch (e) {}
+      root.setAttribute("data-theme", theme);
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <!-- ============================ SEO ============================ -->
@@ -75,6 +86,8 @@
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></g></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14.2A8.6 8.6 0 019.8 3.5 8.9 8.9 0 1020.5 14.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
   <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.7 6.1 20.8l1.2-6.5L2.5 9.7l6.6-.9z" fill="currentColor"/></symbol>
   <!-- Ícones dos serviços -->
   <symbol id="i-net" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="36" height="36" rx="4"/><path d="M6 18l12-12M6 30L30 6M6 42L42 6M18 42L42 18M30 42l12-12M6 6l36 36M6 18l24 24M6 30l12 12M18 6l24 24M30 6l12 12"/></g></symbol>
@@ -115,16 +128,22 @@
         <li><a class="nav__link" href="#contato">Contato</a></li>
       </ul>
       <!-- CTA visível só dentro do menu mobile -->
-      <a class="btn btn--primary nav__mobile-cta" href="#" data-wa="rapido" target="_blank" rel="noopener">
+      <a class="btn btn--primary nav__mobile-cta btn--shine" href="#" data-wa="rapido" target="_blank" rel="noopener">
         <span class="btn__label">Orçamento Rápido</span>
         <svg class="btn__icon"><use href="#i-whatsapp"/></svg>
       </a>
     </nav>
 
-    <!-- CTA rápido -->
-    <a class="btn btn--primary btn--sm header__cta" href="#" data-wa="rapido" target="_blank" rel="noopener">
-      <span class="btn__label">Orçamento Rápido</span>
-    </a>
+    <!-- Ações da direita: alternar tema + CTA rápido -->
+    <div class="header__actions">
+      <button class="theme-toggle" type="button" aria-label="Ativar tema escuro" aria-pressed="false" title="Alternar tema claro/escuro">
+        <svg class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true"><use href="#i-sun"/></svg>
+        <svg class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true"><use href="#i-moon"/></svg>
+      </button>
+      <a class="btn btn--primary btn--sm header__cta btn--shine" href="#" data-wa="rapido" target="_blank" rel="noopener">
+        <span class="btn__label">Orçamento Rápido</span>
+      </a>
+    </div>
 
     <!-- Botão hambúrguer (mobile) -->
     <button class="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
@@ -168,7 +187,7 @@
     <p class="hero__sub reveal" data-reveal="up" data-delay="500">Instalação especializada de redes de proteção, telas mosqueteiras sob medida e fabricação própria de varais com acabamento impecável e alta durabilidade.</p>
 
     <div class="hero__actions reveal" data-reveal="up" data-delay="650">
-      <a class="btn btn--primary btn--lg" href="#" data-wa="geral" data-magnetic target="_blank" rel="noopener">
+      <a class="btn btn--primary btn--lg btn--shine" href="#" data-wa="geral" data-magnetic target="_blank" rel="noopener">
         <svg class="btn__icon btn__icon--lead"><use href="#i-whatsapp"/></svg>
         <span class="btn__label">Solicitar Orçamento Grátis no WhatsApp</span>
       </a>
@@ -222,7 +241,7 @@
           <ul class="tags">
             <li>Janelas</li><li>Sacadas</li><li>Escadas</li><li>Piscinas</li><li>Pets</li>
           </ul>
-          <a class="btn btn--dark" href="#" data-wa="rede" target="_blank" rel="noopener">
+          <a class="btn btn--dark btn--shine" href="#" data-wa="rede" target="_blank" rel="noopener">
             <span class="btn__label">Orçar Rede de Proteção</span>
             <svg class="btn__icon"><use href="#i-arrow"/></svg>
           </a>
@@ -241,7 +260,7 @@
           <ul class="tags">
             <li>Varal de teto</li><li>Varal de parede</li><li>Sob medida</li>
           </ul>
-          <a class="btn btn--dark" href="#" data-wa="varal" target="_blank" rel="noopener">
+          <a class="btn btn--dark btn--shine" href="#" data-wa="varal" target="_blank" rel="noopener">
             <span class="btn__label">Orçar Varal Sob Medida</span>
             <svg class="btn__icon"><use href="#i-arrow"/></svg>
           </a>
@@ -260,7 +279,7 @@
           <ul class="tags">
             <li>Janelas</li><li>Portas</li><li>Sob medida</li>
           </ul>
-          <a class="btn btn--dark" href="#" data-wa="mosqueteira" target="_blank" rel="noopener">
+          <a class="btn btn--dark btn--shine" href="#" data-wa="mosqueteira" target="_blank" rel="noopener">
             <span class="btn__label">Orçar Tela Mosqueteira</span>
             <svg class="btn__icon"><use href="#i-arrow"/></svg>
           </a>
@@ -776,7 +795,7 @@
   <div class="container cta__inner">
     <h2 class="cta__title" id="cta-title" data-split>Não deixe a segurança da sua família para depois.</h2>
     <p class="cta__lead reveal" data-reveal="up" data-delay="300">Fale agora com a nossa equipe e receba seu orçamento grátis.</p>
-    <a class="btn btn--primary btn--lg reveal" data-reveal="up" data-delay="450" href="#" data-wa="especialista" data-magnetic target="_blank" rel="noopener">
+    <a class="btn btn--primary btn--lg reveal btn--shine" data-reveal="up" data-delay="450" href="#" data-wa="especialista" data-magnetic target="_blank" rel="noopener">
       <svg class="btn__icon btn__icon--lead"><use href="#i-whatsapp"/></svg>
       <span class="btn__label">Falar com um Especialista Agora</span>
     </a>
@@ -821,6 +840,7 @@
   </div>
   <div class="container footer__bottom">
     <p>© <span id="year">2026</span> Lucas Proteções. Todos os direitos reservados.</p>
+    <p class="footer__credit">Desenvolvido por <a href="https://www.linkedin.com/in/bruno-carvalho-silvaa/" target="_blank" rel="noopener noreferrer">Bruno Carvalho</a></p>
   </div>
 </footer>
 
@@ -836,8 +856,9 @@
   </a>
 </div>
 
-<!-- Scripts (ordem: configuração → comportamento → animações → galeria) -->
+<!-- Scripts (ordem: configuração → tema → comportamento → animações → galeria) -->
 <script src="js/config.js"></script>
+<script src="js/theme.js"></script>
 <script src="js/main.js"></script>
 <script src="js/animations.js"></script>
 <script src="js/gallery.js"></script>
